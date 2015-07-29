@@ -1,0 +1,37 @@
+#include <Servo.h>                                  // Libreria Servos
+Servo alaDer;                                       // Nombre Servo
+//-------------------------------------
+#define pinPoten A0                                 // Pin potenciometro
+#define pinServo 2                                  // Pin pulso servo
+//-------------------------------------
+const int pulsoMin = 1000;                          // Pulso para 0º 
+const int pulsoMax = 2000;                          // Pulso para 180º
+//-------------------------------------
+int valor;                                          // Variable valor potenciometro
+int angulo;                                         // Variable angulo servo
+//-------------------------------------
+void setup() 
+{
+  // Initialize servo parameters
+  alaDer.attach(pinServo, pulsoMin, pulsoMax);
+  
+  // Initialize serial communication
+  Serial.begin(9600);
+  Serial.println("Ready");
+  delay(500);
+
+  // Set pins as IN/OUTPUT
+  pinMode(pinServo, OUTPUT);
+}
+
+void loop() 
+{
+  valor = analogRead(pinPoten);                   // Leemos potencimetro
+  Serial.print("Potenciometro: ");                // Imprimimos
+  Serial.println(valor);                          // Imprimimos valor potenciometro
+  angulo = map(valor, 0, 1023, 0, 180);           // Convertimos el valor en un angulo
+  alaDer.write(angulo);                           // Pasamos el angulo al servo
+  Serial.print("Angulo: ");                       // Imprimimos
+  Serial.println(angulo);                         // Imprimimos angulo del servo
+  delay(20);                                      // Esperamos
+}
